@@ -1,2 +1,6 @@
+import game as g
+
 if __name__ == "__main__":
-    print("Game start")
+    game = g.Game()
+
+    game.start()
