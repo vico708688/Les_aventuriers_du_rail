@@ -1,17 +1,15 @@
 import tkinter as tk
 from tkinter import messagebox
-import random
-from data.data import *
+from game import Game
 
 class GameApp:
     def __init__(self, root, players):
         self.root = root
         self.root.title("Les Aventuriers du Rail - USA")
+        self.root.geometry("500x500")
+        self.root.minsize(500, 500)
 
-        self.players = players
-        self.hands = {player[0]: [] for player in self.players}
-
-        self.current_player_index = 0
+        self.game = Game(players)
 
         self.setup_ui()
 
@@ -21,7 +19,7 @@ class GameApp:
         title_label.pack(pady=10)
 
         # Affichage des joueurs
-        self.player_label = tk.Label(self.root, text=f"Tour de : {self.players[0][0]}", font=("Helvetica", 12))
+        self.player_label = tk.Label(self.root, text=f"Tour de : {self.game.get_current_player().name}", font=("Helvetica", 12))
         self.player_label.pack()
 
         # Bouton pour piocher une carte
@@ -39,38 +37,30 @@ class GameApp:
         self.cards_frame.pack()
 
     def draw_card(self):
-        card = random.choice(WAGON_COLORS)
-        current_player = self.players[self.current_player_index][0]
+        card = self.game.draw_train_card()
 
-        self.hands[current_player].append(card)
-        self.update_hand_display()
+        if card:
+            player = self.game.get_current_player()
+            player.draw_card(card)
 
-        messagebox.showinfo("Carte piochée", f"{current_player} a pioché une carte {card} !")
+            self.update_hand_display()
+            # messagebox.showinfo("Carte piochée", f"{player.name} a pioché une carte {card} !")
+        else:
+            messagebox.showinfo("Pioche vide", "Il n'y a plus de cartes à piocher.")
+
 
     def update_hand_display(self):
-        # Efface les cartes affichées
         for widget in self.cards_frame.winfo_children():
             widget.destroy()
 
-        # Affiche les cartes en main
-        for card in self.train_cards:
+        for card in self.game.get_current_player().train_cards:
             card_label = tk.Label(self.cards_frame, text=card, relief=tk.RIDGE, borderwidth=2, padx=5, pady=2)
             card_label.pack(side=tk.LEFT, padx=3)
 
     def next_turn(self):
-        self.current_player_index = (self.current_player_index + 1) % len(self.players)
+        self.game.next_turn()
         self.update_turn_display()
         self.update_hand_display()
 
     def update_turn_display(self):
-        current_player = self.players[self.current_player_index][0]
-        self.player_label.config(text=f"Tour de : {current_player}")
-
-    def update_hand_display(self):
-        for widget in self.cards_frame.winfo_children():
-            widget.destroy()
-
-        current_player = self.players[self.current_player_index][0]
-        for card in self.hands[current_player]:
-            card_label = tk.Label(self.cards_frame, text=card, relief=tk.RIDGE, borderwidth=2, padx=5, pady=2)
-            card_label.pack(side=tk.LEFT, padx=3)
+        self.player_label.config(text=f"Tour de : {self.game.get_current_player().name}")
