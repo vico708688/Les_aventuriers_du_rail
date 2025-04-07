@@ -1,3 +1,3 @@
 # Liste des couleurs possibles pour les cartes wagon
-WAGON_COLORS = ['rouge', 'bleu', 'vert', 'jaune', 'noir', 'blanc', 'orange', 'rose', 'joker']
+WAGON_COLORS = ['red', 'blue', 'green', 'yellow', 'black', 'white', 'orange', 'pink', 'joker']
 

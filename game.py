@@ -30,16 +30,17 @@ class Game:
         self.play()
 
     def play(self):
-        while True:
-            self.piocher()
-            self.prendre_route()
-            self.choix_objectifs()
+        while all(self.players[i].remaining_trains > 2 for i in range(len(self.players))):
+            for i in range(len(self.players)):
+                self.piocher(self.players[i])
+                self.prendre_route(self.players[i])
+                self.choix_objectifs(self.players[i])
 
-    def piocher(self):
+    def piocher(self, player):
         pass
 
-    def prendre_route(self):
+    def prendre_route(self, player):
         pass
 
-    def choix_objectifs(self):
+    def choix_objectifs(self, player):
         pass
