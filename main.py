@@ -5,7 +5,7 @@ from data.data import *
 from models.player import Player
 
 def main():
-    players = [Player('Victor', 'red'), Player('AI', 'blue')]
+    players = [Player('Victor', 'rouge'), Player('AI', 'bleu')]
 
     root = tk.Tk()
     app = GameApp(root, players)

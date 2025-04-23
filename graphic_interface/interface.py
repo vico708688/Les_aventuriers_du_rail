@@ -41,7 +41,7 @@ class GameApp:
 
         if card:
             player = self.game.get_current_player()
-            player.draw_card(card)
+            player.draw_cards(card)
 
             self.update_hand_display()
             # messagebox.showinfo("Carte piochée", f"{player.name} a pioché une carte {card} !")
