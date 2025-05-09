@@ -1,5 +1,3 @@
-from game import Game
-
 class Player:
     def __init__(self, name, color):
         self.name = name
@@ -10,7 +8,14 @@ class Player:
         self.remaining_trains = 45     # Par défaut
         self.score = 0
 
-    def draw_cards(self, cards):
-        for card in cards:
+    def draw_card(self, card):
+        if card != None:
             self.train_cards.append(card)
-            Game.draw_train_card(card)
+        else:
+            return None
+
+    def add_destination_card(self, card):
+        self.destination_cards.append(card)
+
+    def __repr__(self):
+        return f'Player {self.name}'

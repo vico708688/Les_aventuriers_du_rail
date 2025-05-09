@@ -1,3 +1,4 @@
 # Liste des couleurs possibles pour les cartes wagon
-WAGON_COLORS = ['blanc', 'bleu', 'jaune', 'vert', 'rouge', 'violet', 'noir', 'marron', 'locomotives']
+WAGON_COLORS = ['white', 'blue', 'yellow', 'green', 'red', 'purple', 'black', 'brown', 'locomotive']
 
+PLAYER_COLORS = ['white', 'blue', 'yellow', 'green', 'red', 'purple', 'black', 'brown']

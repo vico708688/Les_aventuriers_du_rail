@@ -8,7 +8,7 @@ New York to Atlanta (6)
 
 Portland to Nashville (17)
 
-Vancouver to Montréal (20)
+Vancouver to Montreal (20)
 
 Duluth to El Paso (10)
 
@@ -54,6 +54,6 @@ Winnipeg to Houston (12)
 
 Montreal to New Orleans (13)
 
-Sault Ste. Marie to Oklahoma City (9)
+Sault Ste Marie to Oklahoma City (9)
 
 Seattle to Los Angeles (9)
