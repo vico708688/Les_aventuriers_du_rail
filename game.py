@@ -26,6 +26,8 @@ class Game:
                 if self.train_deck:
                     player.draw_card(self.train_deck.pop())
 
+            player.initial_destinations = self.draw_destination_cards(3)  # à sélectionner
+
     def get_visible_cards(self):
         return self.visible_cards
 

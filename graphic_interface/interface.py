@@ -16,7 +16,7 @@ class GameApp:
         self.width_canvas = self.width - self.larg_left_col
         self.height_canvas = self.height
         self.root.geometry(f"{self.width}x{self.height}")
-        #self.root.minsize(self.width, self.height)
+        self.root.minsize(self.width, self.height)
 
         self.selected_cities = []
 
@@ -31,6 +31,7 @@ class GameApp:
         self.bg_image_tk = None  # Stockage image fond
 
         self.setup_ui()
+        self.prompt_initial_destinations()
 
     def setup_ui(self):
         # 🧱 Cadre principal horizontal
@@ -107,8 +108,6 @@ class GameApp:
         self.update_hand_display()
         self.update_objectives_display()
         # self.update_visible_cards()
-
-    import math
 
     def draw_graph(self):
         city_coords = {
@@ -230,9 +229,42 @@ class GameApp:
         self.update_hand_display()
         self.update_turn_display()
         self.update_objectives_display()
-        self.draw_graph()  # 🔁 met à jour visuellement la carte
+        self.draw_graph()
 
     # -------------------------------------- TIRAGE -----------------------------------------------
+    def prompt_initial_destinations(self):
+        def validate():
+            selected = [obj for var, obj in vars if var.get() == 1]
+            if len(selected) < 2:
+                messagebox.showwarning("Choix invalide", "Vous devez en choisir au moins 2.")
+                return
+            player.destination_cards.extend(selected)
+            player.initial_destinations = []
+            top.destroy()
+            self.update_objectives_display()
+            self.update_turn_display()
+
+        for player in self.game.players:
+            top = tk.Toplevel(self.root)
+            top.title("Choisissez vos objectifs")
+            top.grab_set()  # bloque le reste de l'UI
+
+            tk.Label(top, text=f"{player.name}, choisissez 2 ou 3 objectifs :", font=("Helvetica", 12)).pack(pady=10)
+
+            vars = []
+            for obj in player.initial_destinations:
+                var = tk.IntVar()
+                cb = tk.Checkbutton(
+                    top,
+                    text=f"{obj['city1']} → {obj['city2']} ({obj['length']} pts)",
+                    variable=var
+                )
+                cb.pack(anchor="w")
+                vars.append((var, obj))
+
+            validate_btn = tk.Button(top, text="Valider", command=validate)
+            validate_btn.pack(pady=10)
+
     def draw_objectives(self):
         drawn = self.game.draw_destination_cards(3)
 
