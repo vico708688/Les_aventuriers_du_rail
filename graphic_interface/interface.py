@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
 from game import Game
-import random
+import math
 import json
 
 
@@ -16,7 +16,7 @@ class GameApp:
         self.width_canvas = self.width - self.larg_left_col
         self.height_canvas = self.height
         self.root.geometry(f"{self.width}x{self.height}")
-        self.root.minsize(self.width, self.height)
+        #self.root.minsize(self.width, self.height)
 
         self.selected_cities = []
 
@@ -108,8 +108,9 @@ class GameApp:
         self.update_objectives_display()
         # self.update_visible_cards()
 
+    import math
+
     def draw_graph(self):
-        # Conversion coordonnées en pixels
         city_coords = {
             entry["city"]: (
                 entry["i"] / 100 * self.width_canvas,
@@ -120,43 +121,61 @@ class GameApp:
 
         self.canvas.delete("all")
 
-        # Image de fond
         image = Image.open("data/USA_map.jpg").resize((int(self.width_canvas), int(self.height_canvas)))
         self.bg_image_tk = ImageTk.PhotoImage(image)
         self.canvas.create_image(0, 0, image=self.bg_image_tk, anchor="nw")
 
-        # Dessiner les routes
+        # Regrouper manuellement les routes par paire de villes
+        route_groups = []
         for route in self.routes:
-            city1, city2 = route["city1"], route["city2"]
-            points = route["length"]
-            route_color = route.get("color", "gray")
-
-            # Couleur par défaut
-            line_color = "gray"
-
-            # Si la route est revendiquée, utilise la couleur du joueur
-            claimed = None
-            for player in self.game.players:
-                if (city1, city2) in player.routes or (city2, city1) in player.routes:
-                    line_color = player.color
-                    claimed = player
+            found = False
+            for group in route_groups:
+                if sorted([route["city1"], route["city2"]]) == sorted([group[0]["city1"], group[0]["city2"]]):
+                    group.append(route)
+                    found = True
                     break
-            else:
-                # Sinon, utilise la couleur de la route si définie
-                line_color = route_color if route_color != "gray" else "black"
+            if not found:
+                route_groups.append([route])
+
+        for group in route_groups:
+            route = group[0]
+            city1 = route["city1"]
+            city2 = route["city2"]
 
             if city1 in city_coords and city2 in city_coords:
                 x1, y1 = city_coords[city1]
                 x2, y2 = city_coords[city2]
-                self.canvas.create_line(x1, y1, x2, y2, fill=line_color, width=4)
-                if not claimed:
-                    mx, my = (x1 + x2) / 2, (y1 + y2) / 2
-                    self.canvas.create_text(mx, my, text=str(points), font=("Helvetica", 8), fill="darkred")
+                dx, dy = x2 - x1, y2 - y1
+                length = math.hypot(dx, dy)
+                offset_x, offset_y = -dy / length * 6, dx / length * 6  # perpendiculaire
 
-        # Villes (nœuds)
+                for i, route in enumerate(group):
+                    shift = (i - (len(group) - 1) / 2)  # pour centrer
+                    ox = offset_x * shift
+                    oy = offset_y * shift
+
+                    color = route.get("color", "gray")
+                    points = route["length"]
+
+                    # Vérifie si cette route est revendiquée
+                    claimed = None
+                    for player in self.game.players:
+                        if (route["city1"], route["city2"]) in player.routes or (
+                        route["city2"], route["city1"]) in player.routes:
+                            color = player.color
+                            claimed = player
+                            break
+
+                    self.canvas.create_line(x1 + ox, y1 + oy, x2 + ox, y2 + oy, fill=color, width=4)
+
+                    if not claimed:
+                        mx, my = (x1 + x2) / 2 + ox, (y1 + y2) / 2 + oy
+                        self.canvas.create_text(mx, my, text=str(points), font=("Helvetica", 8), fill="darkred")
+
+        # Villes
         for city, (x, y) in city_coords.items():
             self.canvas.create_oval(x - 5, y - 5, x + 5, y + 5, fill="lightblue", outline="black")
-            self.canvas.create_text(x, y - 10, text=city, font=("Helvetica", 7), fill="black")
+            self.canvas.create_text(x, y - 10, text=city, font=("Helvetica", 11, 'bold'), fill="black")
 
         self.city_coords = city_coords
         self.canvas.bind("<Button-1>", self.on_canvas_click)
@@ -176,9 +195,6 @@ class GameApp:
         if len(self.selected_cities) == 2:
             city1, city2 = self.selected_cities
 
-            # Nettoyer la sélection visuelle
-            # for circle in self.selected_cities:
-            #     self.canvas.delete(circle)
             self.selected_cities.clear()
 
             # Tenter de revendiquer la route
@@ -194,8 +210,6 @@ class GameApp:
                 if answer:
                     self.claim_route(city1, city2, route)
                 return
-
-        # tk.messagebox.showinfo("Aucune route", f"Aucune route directe entre {city1} et {city2}")
 
     def claim_route(self, city1, city2, route):
         player = self.game.current_player
