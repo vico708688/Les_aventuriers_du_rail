@@ -1,5 +1,5 @@
 import random
-from data.data import *
+from data.constants import *
 from models.player import Player
 import json
 
@@ -8,7 +8,7 @@ class Game:
         self.players = [Player(players[i], PLAYER_COLORS[i]) for i in range(len(players))]
         self.current_player_index = 0
         self.train_deck = WAGON_COLORS * 12
-        random.shuffle(self.train_deck)
+        #random.shuffle(self.train_deck)
 
         self.SCORE_TABLE = {}
 
@@ -26,7 +26,7 @@ class Game:
                 if self.train_deck:
                     player.draw_card(self.train_deck.pop())
 
-            player.initial_destinations = self.draw_destination_cards(3)  # à sélectionner
+            #player.destination_cards = self.draw_destination_cards(3)  # à sélectionner
 
     def get_visible_cards(self):
         return self.visible_cards
