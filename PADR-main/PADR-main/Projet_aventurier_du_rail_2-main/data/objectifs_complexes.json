@@ -1,0 +1,366 @@
+[
+    {
+        "cities": [
+            "Saint Louis",
+            "Kansas City",
+            "Oklahoma City"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Portland",
+            "San Francisco",
+            "Salt Lake City"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Raleigh",
+            "Nashville",
+            "Atlanta"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Miami",
+            "Atlanta",
+            "Raleigh"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "El Paso",
+            "Phoenix",
+            "Denver"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Little Rock",
+            "Oklahoma City",
+            "Denver"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Oklahoma City",
+            "El Paso",
+            "Dallas"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Denver",
+            "Helena",
+            "Winnipeg"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Omaha",
+            "Helena",
+            "Winnipeg"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Los Angeles",
+            "San Francisco",
+            "Salt Lake City"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Kansas City",
+            "Saint Louis",
+            "Chicago"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Boston",
+            "New York",
+            "Montreal"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Vancouver",
+            "Calgary",
+            "Winnipeg"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Portland",
+            "Salt Lake City",
+            "Las Vegas"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Montreal",
+            "New York",
+            "Pittsburgh"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Montreal",
+            "Sault Ste Marie",
+            "Toronto"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Toronto",
+            "Duluth",
+            "Chicago"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Washington",
+            "Pittsburgh",
+            "Nashville"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Helena",
+            "Calgary",
+            "Vancouver"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Winnipeg",
+            "Duluth",
+            "Chicago"
+        ],
+        "length": 15
+    },
+    {
+        "cities": [
+            "Portland",
+            "Salt Lake City",
+            "Denver",
+            "Kansas City"
+        ],
+        "length": 20
+    },
+    {
+        "cities": [
+            "Helena",
+            "Denver",
+            "Phoenix",
+            "Santa Fe"
+        ],
+        "length": 20
+    },
+    {
+        "cities": [
+            "Omaha",
+            "Kansas City",
+            "Denver",
+            "Oklahoma City"
+        ],
+        "length": 20
+    },
+    {
+        "cities": [
+            "Duluth",
+            "Winnipeg",
+            "Sault Ste Marie",
+            "Montreal"
+        ],
+        "length": 20
+    },
+    {
+        "cities": [
+            "Calgary",
+            "Seattle",
+            "Helena",
+            "Winnipeg"
+        ],
+        "length": 20
+    },
+    {
+        "cities": [
+            "Calgary",
+            "Winnipeg",
+            "Duluth",
+            "Sault Ste Marie"
+        ],
+        "length": 20
+    },
+    {
+        "cities": [
+            "Houston",
+            "El Paso",
+            "Los Angeles",
+            "Phoenix"
+        ],
+        "length": 20
+    },
+    {
+        "cities": [
+            "Las Vegas",
+            "Los Angeles",
+            "San Francisco",
+            "Portland"
+        ],
+        "length": 20
+    },
+    {
+        "cities": [
+            "Toronto",
+            "Montreal",
+            "Sault Ste Marie",
+            "Duluth",
+            "Helena"
+        ],
+        "length": 25
+    },
+    {
+        "cities": [
+            "Washington",
+            "Pittsburgh",
+            "Raleigh",
+            "Nashville",
+            "Saint Louis"
+        ],
+        "length": 25
+    },
+    {
+        "cities": [
+            "Las Vegas",
+            "Los Angeles",
+            "Phoenix",
+            "Denver",
+            "Helena"
+        ],
+        "length": 25
+    },
+    {
+        "cities": [
+            "Nashville",
+            "Atlanta",
+            "Raleigh",
+            "Pittsburgh",
+            "Washington"
+        ],
+        "length": 25
+    },
+    {
+        "cities": [
+            "Denver",
+            "Phoenix",
+            "El Paso",
+            "Santa Fe",
+            "Oklahoma City",
+            "Dallas"
+        ],
+        "length": 30
+    },
+    {
+        "cities": [
+            "Salt Lake City",
+            "Las Vegas",
+            "Los Angeles",
+            "Phoenix",
+            "El Paso",
+            "Santa Fe"
+        ],
+        "length": 30
+    },
+    {
+        "cities": [
+            "Toronto",
+            "Sault Ste Marie",
+            "Duluth",
+            "Helena",
+            "Denver",
+            "Oklahoma City"
+        ],
+        "length": 30
+    },
+    {
+        "cities": [
+            "Raleigh",
+            "Nashville",
+            "Atlanta",
+            "Miami",
+            "New Orleans",
+            "Little Rock"
+        ],
+        "length": 30
+    },
+    {
+        "cities": [
+            "Portland",
+            "Salt Lake City",
+            "Helena",
+            "Denver",
+            "Kansas City",
+            "Oklahoma City",
+            "Little Rock"
+        ],
+        "length": 35
+    },
+    {
+        "cities": [
+            "Montreal",
+            "New York",
+            "Pittsburgh",
+            "Nashville",
+            "Raleigh",
+            "Atlanta",
+            "New Orleans"
+        ],
+        "length": 35
+    },
+    {
+        "cities": [
+            "Toronto",
+            "Montreal",
+            "Boston",
+            "New York",
+            "Pittsburgh",
+            "Saint Louis",
+            "Little Rock"
+        ],
+        "length": 35
+    },
+    {
+        "cities": [
+            "Dallas",
+            "Houston",
+            "El Paso",
+            "Santa Fe",
+            "Denver",
+            "Salt Lake City",
+            "Helena"
+        ],
+        "length": 35
+    }
+]
