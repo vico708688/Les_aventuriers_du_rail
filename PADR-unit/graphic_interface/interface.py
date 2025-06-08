@@ -358,7 +358,7 @@ class GameApp:
         if len(roads) == 0:
             return
         if answer:
-            self.claim_route(city1, city2, roads)
+            self.claim_route(roads)
         return
 
     def choose_color_from_deck(self, length):
@@ -437,7 +437,7 @@ class GameApp:
             return roads[index]
         return None
 
-    def claim_route(self, city1, city2, route):
+    def claim_route(self, route):
         """
         Appel de la logique interne pour revendiquer la route et met à jour le score et l'affichage si le joueur n'a pas déjà fait une action.
         """
@@ -446,7 +446,7 @@ class GameApp:
 
         if not self.game.current_player.action_done:
             self.game.current_player.action_done = True
-            self.game.claim_route(city1, city2, route)
+            self.game.claim_route(route)
             self.draw_graph()
             self.update_objectif_accompli()
         else:

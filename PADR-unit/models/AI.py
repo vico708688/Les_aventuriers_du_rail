@@ -190,7 +190,7 @@ class RandomAIStrategy:
                 if route.is_between(city1, city2) and route.claimed_by is None:
                     if player.is_ai and route in player.destination_cards:
                         continue  # sécurité supplémentaire
-                    game.claim_route(city1, city2, [route])
+                    game.claim_route([route])
                     break
 
     def draw_objective(self, game):
@@ -338,12 +338,12 @@ class OptiAIStrategy:
                             continue
                         count = cards_counter.get(c, 0)
                         if count + locos >= length:
-                            game.claim_route(city1, city2, [route])
+                            game.claim_route([route])
                             return
                 else:
                     count = cards_counter.get(color, 0)
                     if count + locos >= length:
-                        game.claim_route(city1, city2, [route])
+                        game.claim_route([route])
                         return
 
         drawn = 0

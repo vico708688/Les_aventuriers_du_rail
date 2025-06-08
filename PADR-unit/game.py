@@ -14,7 +14,63 @@ from models.AI import AIPlayer, RandomAIStrategy, OptiAIStrategy
 
 
 class Game:
+    """
+    Auteurs :
+
+        - Oudin Victor
+        - Dubedout Thomas
+
+    La classe Game encapsule toute la logique du jeu : gestion des joueurs,
+    des cartes, des objectifs, du tour de jeu, et des conditions de fin.
+    Elle fait le lien entre les composants déclaratifs (routes, villes, objectifs) et le déroulement du jeu.
+
+    Attributs
+    ----------
+    players : liste des joueurs de la partie
+    difficulty="Facile" : difficulté de l'IA
+
+    Methods
+    -------
+    start_game()
+        Démarre la partie.
+    end_game()
+        Arrête la partie.
+    lit_dsl(filepath)
+        Lit le fichier dsl se trouvant à filepath, et enregistre les routes, les villes et les objectifs.
+    draw_destination_cards(count=3)
+        Tire count cartes destination.
+    draw_objectives()
+        Propose à l'utilisateur les cartes destination qu'il peut choisir.
+    draw_card()
+        Pioche une carte de la pioche face cachée.
+    draw_visible_card(index)
+        Pioche la carte visible située à la position index.
+    next_player()
+        Passe au joueur suivant.
+    claim_route(routes)
+        Gère la revendication d'une route par le joueur courant.
+    is_objective_completed(obj)
+        Vérifie si l'objectif obj est réalisé par le joueur courant.
+    _bfs_path_exists(graph, start, end)
+        Recherche un chemin entre deux villes dans le graphe des routes du joueur.
+
+    Properties
+    ----------
+
+    current_player
+        joueur dont c'est actuellement le tour
+    """
     def __init__(self, players, difficulty="Facile"):
+        """
+        Initialise les joueurs et les composants du jeu.
+            - Attribue une stratégie IA en fonction de la difficulté.
+            - Mélange les cartes train et distribue les cartes visibles.
+
+        Parameters
+        ----------
+        players : liste des joueurs de la partie
+        difficulty : niveau de difficulté de l'IA ("Facile" ou "Difficile")
+        """
         self.difficulty = difficulty  # Stocke la difficulté choisie
 
         # Players
@@ -74,6 +130,10 @@ class Game:
         self.ended = False
 
     def start_game(self):
+        """
+        - Charge les villes, routes et objectifs depuis le DSL
+        - Donne 4 cartes wagon à chaque joueur
+        """
         self.lit_dsl("data/config.dsl")
 
         for player in self.players:
@@ -82,9 +142,17 @@ class Game:
                     player.draw_card(self.train_deck.pop())
 
     def end_game(self):
+        """
+        Définit self.ended à True pour signaler que la partie est terminée.
+        """
         self.ended = True
 
     def lit_dsl(self, filepath):
+        """
+        - Lit un fichier config.dsl ligne par ligne
+        - Reconnaît les entrées VILLE, ROUTE et OBJECTIF
+        - Instancie les objets dans les attributs correspondants
+        """
         with open(filepath, encoding="utf-8") as f:
             for line in f:
                 line = line.strip()
@@ -110,6 +178,19 @@ class Game:
                     })
 
     def draw_destination_cards(self, count=3):
+        """
+        Tire count cartes objectifs (si disponibles) de la pile
+
+        Parameters
+        ----------
+        count=3 : int
+            Nombre de cartes à tirer
+
+        Returns
+        -------
+        list
+            Une liste de carte objectif tirées
+        """
         cards = []
         for _ in range(count):
             if self.objectifs:
@@ -118,11 +199,8 @@ class Game:
 
     def draw_objectives(self):
         """
-            Un joueur peut utiliser son tour de jeu pour récupérer des cartes Destination supplémentaires.
-            Pour cela, il doit prendre 3 cartes sur le dessus de la pile des cartes Destination.
-            Il doit conserver au moins l’une des trois cartes, mais peut bien sûr en garder 2 ou même 3.
-            S’il  reste moins de 3 cartes Destination dans la pile, le joueur ne peut prendre que le nombre de cartes disponibles.
-            Chaque carte qui n’est pas conservée par le joueur est remise face cachée sous la pile.
+        Affiche à l'utilisateur les objectifs tirés.
+        Ajoute les cartes sélectionnées à la main du joueur courant.
         """
         drawn = self.draw_destination_cards(3)
 
@@ -140,12 +218,25 @@ class Game:
             player.add_destination_card(card)
 
     def draw_card(self):
+        """
+        Pioche une carte de la pioche train_deck et la donne au joueur courant.
+        """
         for _ in range(1):
             card = self.draw_train_card()
             if card:
                 self.current_player.draw_card(card)
 
     def draw_visible_card(self, index):
+        """
+        Permet de prendre une carte visible spécifique.
+        Gère la règle spéciale des 3 locomotives visibles.
+        Recharge la pioche depuis la défausse si elle est vide.
+
+        Parameters
+        ----------
+        index : int
+            Position de la carte visible à tirer
+        """
         # Si il n'y a plus de carte dans la pioche,
         # on mélange les cartes defaussées et on les met dans la pioche
         if len(self.train_deck) == 0:
@@ -179,18 +270,43 @@ class Game:
 
     @property
     def current_player(self):
+        """
+        Retourne le joueur actuellement actif selon current_player_index.
+        """
         return self.players[self.current_player_index]
 
     def draw_train_card(self):
+        """
+        Retourne une carte depuis train_deck si elle n'est pas vide.
+        """
         if self.train_deck:
             return self.train_deck.pop()
         return None
 
     def next_player(self):
+        """
+        Passe au joueur suivant dans la liste (boucle circulaire).
+        """
         self.current_player_index = (self.current_player_index + 1) % len(self.players)
 
-    def claim_route(self, city1, city2, routes):# Un même joueur ne peut pas prendre 2 routes reliant les 2 mêmes villes.
+    def claim_route(self, routes):# Un même joueur ne peut pas prendre 2 routes reliant les 2 mêmes villes.
+        """
+        Gère la revendication d'une route :
+            - Vérifie les cartes nécessaires
+            - Gère les routes grises et doubles
+            - Retire les cartes jouées, met à jour le score et les wagons
+            - Met à jour l'état de la route et du joueur
+            - Termine la partie si le joueur a ≤ 2 wagons
+
+        Parameters
+        ----------
+
+        routes : list
+            Liste des routes entre les deux villes
+        """
         player = self.current_player
+        city1 = routes[0].city1
+        city2 = routes[0].city2
 
         # SÉLECTION DE LA ROUTE SI PLUSIEURS OPTIONS
         if len(routes) > 1:
@@ -285,12 +401,14 @@ class Game:
                             f"{player.name} a pris la route {city1} ↔ {city2} ({route.color}) !")
 
     def is_objective_completed(self, obj, player):
-        """
-        Cette méthode permet de savoir si un objectif a été complété
-         c'est à dire si la ville d'arrivée est bien celle indiquée
-         sur la carte objectif.
-        :param obj:
-        :return:
+        """"
+        Vérifie si l'objectif obj est rempli par le joueur courant.
+        Utilise une recherche en largeur (BFS) dans le graphe des routes possédées.
+
+        Parameters
+        ----------
+        obj : dict
+            Dictionnaire contant les informations d'une carte objectif
         """
         graph = {}
         for route in player.routes:
@@ -309,6 +427,14 @@ class Game:
             return self._bfs_path_exists(graph, obj.get("city1"), obj.get("city2"))
 
     def _bfs_path_exists(self, graph, start, end):
+        """
+        Recherche un chemin entre deux villes dans le graphe des routes du joueur.
+
+        Returns
+        -------
+        bool
+            Renvoie True si un chemin existe, sinon False.
+        """
         visited = set()
         queue = deque([start])
         while queue:
@@ -322,12 +448,18 @@ class Game:
         return False
 
     def calculate_final_scores(self):
+        """
+        Calcul le score final en prenant en compte les objectifs atteint et échoués
+        """
         for player in self.players:
             for obj in player.destination_cards:
                 if "done" not in obj:  # Non réalisé
                     player.score -= obj["value"]
 
     def update_objective_score(self, player):
+        """
+        Met à jour le score en prenant en compte les objectifs atteint et échoués.
+        """
         for obj in player.destination_cards:
             if "done" not in obj and self.is_objective_completed(obj):
                 player.score += obj["value"]

@@ -60,3 +60,10 @@ Joueur 1 : Victor - Score : 0 - Objectifs reussis : 0
 Joueur 2 : IA - Score : 49 - Objectifs reussis : 0
 Gagnant : IA avec 49 points
 
+
+--- Partie du 2025-06-08 21:05:56 ---
+Difficulte : Difficile
+Joueur 1 : Victor - Score : 0 - Objectifs reussis : 0
+Joueur 2 : IA - Score : 49 - Objectifs reussis : 0
+Gagnant : IA avec 49 points
+
