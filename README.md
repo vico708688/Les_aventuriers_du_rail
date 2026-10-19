@@ -1,7 +1,7 @@
 # Les_aventuriers_du_rail
 
 Structure code :
-
+```
 les_aventuriers_du_rail/
 │
 ├── main.py                     # Point d'entrée du jeu
@@ -28,3 +28,4 @@ les_aventuriers_du_rail/
 │   └── console_ui.py
 │
 └── README.md                   # Explications du projet
+```
